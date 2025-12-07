@@ -487,11 +487,12 @@ const downloadImage = async (url) => {
   }
   
   .lightbox-content img {
-    max-width: 95vw;
+    max-width: 90vw;
+    max-height: 80vh;
   }
   
   .close-btn {
-    top: -30px;
+    top: -40px;
     right: 0;
   }
 }
