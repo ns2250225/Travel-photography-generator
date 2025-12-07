@@ -55,12 +55,16 @@
         <div class="control-group">
           <h3>📸 上传照片</h3>
           <div class="upload-wrapper">
-            <input 
-              type="file" 
-              @change="handleFileSelect" 
-              accept="image/*" 
-              class="file-input"
-            />
+            <label class="custom-file-upload">
+              <input 
+                type="file" 
+                @change="handleFileSelect" 
+                accept="image/*" 
+                class="file-input-hidden"
+              />
+              <span class="upload-icon">📁</span>
+              <span class="upload-text">选择图片文件</span>
+            </label>
           </div>
           <div v-if="isUploading" class="uploading-text">☁️ 上传中...</div>
           <div v-if="localPreviewUrl || uploadUrl" class="preview-container" @click="openLightbox(localPreviewUrl || uploadUrl)">
@@ -406,7 +410,30 @@ const downloadImage = async (url) => {
 }
 
 /* Reused Styles */
-.file-input { width: 100%; padding: 8px; background: #222; border-radius: 6px; }
+.file-input-hidden { display: none; }
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #ccc;
+  font-weight: 500;
+}
+.custom-file-upload:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #42b883;
+  color: white;
+}
+.upload-icon { font-size: 1.2em; }
+
 .preview-container { margin-top: 12px; text-align: center; position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; display: inline-block; }
 .preview-img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #555; transition: transform 0.3s; display: block; }
 .preview-container:hover .preview-img { transform: scale(1.05); filter: brightness(0.8); }
