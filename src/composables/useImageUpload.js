@@ -9,7 +9,8 @@ export function useImageUpload() {
     isUploading.value = true;
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('outputFormat', 'png');
+    // Change to jpg to avoid strict file size limits on png and reduce size
+    formData.append('outputFormat', 'jpg');
 
     try {
       // Use proxy path configured in vite.config.js
@@ -21,7 +22,8 @@ export function useImageUpload() {
         uploadUrl.value = res.data.url;
         return res.data.url;
       } else {
-        throw new Error('Upload reported failure');
+        // Use the message from the API if available
+        throw new Error(res.data.message || 'Upload reported failure');
       }
     } catch (e) {
       console.error(e);
