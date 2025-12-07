@@ -16,10 +16,15 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/generate/, '/v1/draw/nano-banana')
       },
-      '/nominatim': {
-        target: 'https://nominatim.openstreetmap.org',
+      '/amap-search': {
+        target: 'https://restapi.amap.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/nominatim/, '/search')
+        rewrite: (path) => path.replace(/^\/amap-search/, '/v3/assistant/inputtips')
+      },
+      '/photon': {
+        target: 'https://photon.komoot.io',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/photon/, '/api')
       }
     }
   }

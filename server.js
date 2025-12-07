@@ -30,12 +30,21 @@ app.use('/api/generate', createProxyMiddleware({
   },
 }));
 
-// Proxy for Nominatim (if needed, though client uses direct URL mostly)
-app.use('/nominatim', createProxyMiddleware({
-  target: 'https://nominatim.openstreetmap.org',
+// Proxy for AMap (Gaode) Suggestion API - Best for Chinese search
+app.use('/amap-search', createProxyMiddleware({
+  target: 'https://restapi.amap.com',
   changeOrigin: true,
   pathRewrite: {
-    '^/nominatim': '/search',
+    '^/amap-search': '/v3/assistant/inputtips',
+  },
+}));
+
+// Proxy for Photon (Search) - Backup for global locations
+app.use('/photon', createProxyMiddleware({
+  target: 'https://photon.komoot.io',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/photon': '/api',
   },
 }));
 

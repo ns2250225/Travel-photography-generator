@@ -12,7 +12,9 @@
           placeholder="输入地点 (如: Paris)" 
           class="search-input"
         />
-        <button @click="performSearch" class="search-btn">🔍</button>
+        <button @click="performSearch" class="search-btn" :disabled="isSearching">
+          {{ isSearching ? '...' : '🔍' }}
+        </button>
       </div>
       
       <!-- Search Results Dropdown -->
@@ -126,6 +128,7 @@ const coords = ref(null);
 const localPreviewUrl = ref(null);
 const lightboxImage = ref(null);
 const showDialog = ref(false);
+const isSearching = ref(false);
 
 const { uploadUrl, isUploading, uploadImage } = useImageUpload();
 const { generationResult, progress, status, generatePhoto } = useAiGeneration();
@@ -139,12 +142,20 @@ const handleCoords = (data) => {
 
 const performSearch = async () => {
   if (mapRef.value && searchQuery.value) {
-    const results = await mapRef.value.searchLocation(searchQuery.value);
-    if (results && results.length > 0) {
-      searchResults.value = results;
-    } else {
-      searchResults.value = [];
-      alert('未找到该地点');
+    isSearching.value = true;
+    try {
+      const results = await mapRef.value.searchLocation(searchQuery.value);
+      if (results && results.length > 0) {
+        searchResults.value = results;
+      } else {
+        searchResults.value = [];
+        alert('未找到该地点');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('搜索出错，请稍后重试');
+    } finally {
+      isSearching.value = false;
     }
   }
 };
