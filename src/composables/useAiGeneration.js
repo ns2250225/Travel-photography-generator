@@ -4,11 +4,13 @@ export function useAiGeneration() {
   const generationResult = ref(null);
   const progress = ref(0);
   const status = ref('idle'); // idle, generating, success, error
+  const errorMsg = ref('');
 
   const generatePhoto = async (lat, lng, imgUrl) => {
     status.value = 'generating';
     progress.value = 0;
     generationResult.value = null;
+    errorMsg.value = '';
 
     // 1. 构建 Prompt
     const prompt = `请根据纬度和经度 【${lat}, ${lng}】 的实际地点，生成符合该地点当前时间氛围与实时天气的真实照片。让指定的角色自然融入场景，看起来像正在当地旅游。`;
@@ -81,10 +83,12 @@ export function useAiGeneration() {
       }
     } catch (e) {
       status.value = 'error';
+      progress.value = 0;
+      errorMsg.value = e.message;
       alert('生成失败: ' + e.message);
       console.error(e);
     }
   };
 
-  return { generationResult, progress, status, generatePhoto };
+  return { generationResult, progress, status, errorMsg, generatePhoto };
 }

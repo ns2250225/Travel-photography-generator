@@ -85,7 +85,7 @@
             <span class="progress-text">{{ progress }}%</span>
           </div>
           
-          <div v-if="status === 'error'" class="error-msg">❌ 生成出错，请重试</div>
+          <div v-if="status === 'error'" class="error-msg">❌ 生成出错: {{ errorMsg }}</div>
         </div>
 
         <!-- Result Display -->
@@ -128,7 +128,7 @@ const lightboxImage = ref(null);
 const showDialog = ref(false);
 
 const { uploadUrl, isUploading, uploadImage } = useImageUpload();
-const { generationResult, progress, status, generatePhoto } = useAiGeneration();
+const { generationResult, progress, status, errorMsg, generatePhoto } = useAiGeneration();
 
 const canGenerate = computed(() => coords.value && uploadUrl.value);
 
@@ -407,9 +407,9 @@ const downloadImage = async (url) => {
 
 /* Reused Styles */
 .file-input { width: 100%; padding: 8px; background: #222; border-radius: 6px; }
-.preview-container { margin-top: 12px; text-align: center; position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; }
-.preview-img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #555; transition: transform 0.3s; display: block; }
-.preview-container:hover .preview-img { transform: scale(1.02); filter: brightness(0.8); }
+.preview-container { margin-top: 12px; text-align: center; position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; display: inline-block; }
+.preview-img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #555; transition: transform 0.3s; display: block; }
+.preview-container:hover .preview-img { transform: scale(1.05); filter: brightness(0.8); }
 .overlay-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 .preview-container:hover .overlay-icon { opacity: 1; }
 
@@ -440,4 +440,32 @@ const downloadImage = async (url) => {
 .close-btn { position: absolute; top: -40px; right: -40px; background: none; border: none; color: white; font-size: 30px; cursor: pointer; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 600px) {
+  .dialog-content {
+    width: 95%;
+    max-width: 95%;
+    padding: 16px;
+    margin: 10px;
+    max-height: 85vh;
+  }
+
+  .search-container {
+    width: 95%;
+    top: 10px;
+  }
+
+  .instructions-panel {
+    display: none;
+  }
+  
+  .lightbox-content img {
+    max-width: 95vw;
+  }
+  
+  .close-btn {
+    top: -30px;
+    right: 0;
+  }
+}
 </style>
